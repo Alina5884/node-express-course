@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Node-Express</title>
+    </head>
+    <body>
+        <h1>Welcome to Home Page</h1>
+        <h4>Hello, world!</h4>
+        <button id="load-products">Load Products</button>
+        <div id="products-container"></div>
+
+        <script>
+            document.getElementById('load-products').addEventListener('click', () => {
+                fetch('/api/v1/products')
+                    .then(response => response.json())
+                    .then(data => {
+                        const productsContainer = document.getElementById('products-container');
+                        productsContainer.innerHTML = '';
+
+                        data.forEach(product => {
+                            const productDiv = document.createElement('div');
+                            productDiv.innerHTML = `
+                                <h3>${product.name}</h3>
+                                <img src="${product.image}" alt="${product.name}">
+                                <p>Price: ${product.price}</p>
+                                <p>${product.desc}</p>
+                            `;
+                            productsContainer.appendChild(productDiv);
+                        });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            });
+        </script>
+    </body>
+</html>
