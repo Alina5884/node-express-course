@@ -1,0 +1,14 @@
+1. In this lesson, you created a middleware function called asyncWrapper. Why?
+
+The asyncWrapper middleware was created to simplify error handling in asynchronous 
+functions by catching errors and avoiding repetitive try-catch blocks.
+
+2. 
+const getTask = asyncWrapper(async (req, res, next) => {  
+  const { id: taskID } = req.params;  
+  const task = await Task.findOne({ _id: taskID });  
+  if (!task) {  
+    return next(createCustomError(`No task with id: ${taskID}`, 404))
+  }  
+  res.status(200).json({ task });  
+});  
