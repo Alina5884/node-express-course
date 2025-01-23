@@ -3,8 +3,17 @@ const express = require("express");
 const app = express();
 const peopleRouter = require('./routes/people');
 
-// app.use(express.static('./methods-public'));
+const logger = (req, res, next) => {
+    const method = req.method;
+    const url = req.url;
+    const time = new Date().toISOString();
+    console.log(method, url, time);
+    next();
+};
 
+app.use(logger);
+
+// app.use(express.static('./methods-public'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use('/api/v1/people', peopleRouter);
@@ -45,16 +54,6 @@ app.use('/api/v1/people', peopleRouter);
 //         return res.status(400).json({ success: false, message: `No person with id ${req.params.id}` })
 //     }
 //     const newPeople = people.filter((person) => person.id !== Number(req.params.id));
-
-const logger = (req, res, next) => {
-    const method = req.method;
-    const url = req.url;
-    const time = new Date().toISOString();
-    console.log(method, url, time);
-    next();
-};
-
-app.use(logger);
 
 app.use(express.static("./public"));
 
